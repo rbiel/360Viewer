@@ -11,6 +11,10 @@
             height: auto;
             margin-top: 20px;
         }
+        #canvas {
+            max-width: 100%;
+            height: auto;
+        }
     </style>
 </head>
 <body>
@@ -26,28 +30,31 @@
                 <img id="imageThumbnail" src="" alt="Thumbnail">
             </div>
             <div class="col-md-6">
-                <a-scene embedded keyboard-shortcuts="enabled: false">
-                    <a-sky id="360-image" look-controls wasd-controls="enabled: false" touch-look-controls></a-sky>
-                </a-scene>
+                <canvas id="canvas"></canvas>
             </div>
         </div>
     </div>
 
-    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
-    <script src="https://cdn.rawgit.com/donmccurdy/aframe-extras/v6.0.0/dist/aframe-extras.min.js"></script>
     <script>
         function uploadPicture() {
             const fileInput = document.getElementById('fileInput');
             const file = fileInput.files[0];
             const imageThumbnail = document.getElementById('imageThumbnail');
+            const canvas = document.getElementById('canvas');
+            const ctx = canvas.getContext('2d');
             
             if (file) {
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     const imageUrl = e.target.result;
-                    const sky = document.getElementById('360-image');
-                    sky.setAttribute('src', imageUrl);
                     imageThumbnail.setAttribute('src', imageUrl); // Set thumbnail source
+                    const image = new Image();
+                    image.src = imageUrl;
+                    image.onload = function() {
+                        canvas.width = image.width;
+                        canvas.height = image.height;
+                        ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+                    };
                 }
                 reader.readAsDataURL(file);
             } else {
