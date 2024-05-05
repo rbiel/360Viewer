@@ -5,6 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Upload and Display 360° Picture</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        #imageThumbnail {
+            max-width: 100%;
+            height: auto;
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
     <div class="container mt-5">
@@ -14,9 +21,16 @@
             <label class="custom-file-label" for="fileInput">Choose file</label>
         </div>
         <button class="btn btn-primary mb-3" onclick="uploadPicture()">Upload</button>
-        <a-scene embedded keyboard-shortcuts="enabled: false">
-            <a-sky id="360-image" look-controls wasd-controls="enabled: false" touch-look-controls></a-sky>
-        </a-scene>
+        <div class="row">
+            <div class="col-md-6">
+                <img id="imageThumbnail" src="" alt="Thumbnail">
+            </div>
+            <div class="col-md-6">
+                <a-scene embedded keyboard-shortcuts="enabled: false">
+                    <a-sky id="360-image" look-controls wasd-controls="enabled: false" touch-look-controls></a-sky>
+                </a-scene>
+            </div>
+        </div>
     </div>
 
     <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
@@ -25,6 +39,7 @@
         function uploadPicture() {
             const fileInput = document.getElementById('fileInput');
             const file = fileInput.files[0];
+            const imageThumbnail = document.getElementById('imageThumbnail');
             
             if (file) {
                 const reader = new FileReader();
@@ -32,6 +47,7 @@
                     const imageUrl = e.target.result;
                     const sky = document.getElementById('360-image');
                     sky.setAttribute('src', imageUrl);
+                    imageThumbnail.setAttribute('src', imageUrl); // Set thumbnail source
                 }
                 reader.readAsDataURL(file);
             } else {
