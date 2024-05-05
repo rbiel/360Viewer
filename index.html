@@ -4,16 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Upload and Display 360° Picture</title>
-    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-    <h1>Upload and Display 360° Picture</h1>
-    <input type="file" accept="image/*" id="fileInput">
-    <button onclick="uploadPicture()">Upload</button>
-    <a-scene>
-        <a-sky id="360-image" src=""></a-sky>
-    </a-scene>
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Upload and Display 360° Picture</h1>
+        <div class="custom-file mb-3">
+            <input type="file" class="custom-file-input" id="fileInput" accept="image/*">
+            <label class="custom-file-label" for="fileInput">Choose file</label>
+        </div>
+        <button class="btn btn-primary mb-3" onclick="uploadPicture()">Upload</button>
+        <div class="embed-responsive embed-responsive-1by1">
+            <div id="viewer" class="embed-responsive-item"></div>
+        </div>
+    </div>
 
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
     <script>
         function uploadPicture() {
             const fileInput = document.getElementById('fileInput');
@@ -23,8 +29,12 @@
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     const imageUrl = e.target.result;
-                    const sky = document.getElementById('360-image');
-                    sky.setAttribute('src', imageUrl);
+                    const viewer = document.getElementById('viewer');
+                    viewer.innerHTML = ''; // Clear previous content
+                    const imageElement = document.createElement('img');
+                    imageElement.setAttribute('src', imageUrl);
+                    imageElement.setAttribute('class', 'img-fluid');
+                    viewer.appendChild(imageElement);
                 }
                 reader.readAsDataURL(file);
             } else {
