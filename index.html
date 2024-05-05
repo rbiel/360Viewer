@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload and Display 360° Picture</title>
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+</head>
+<body>
+    <h1>Upload and Display 360° Picture</h1>
+    <input type="file" accept="image/*" id="fileInput">
+    <button onclick="uploadPicture()">Upload</button>
+    <a-scene>
+        <a-sky id="360-image" src=""></a-sky>
+    </a-scene>
+
+    <script>
+        function uploadPicture() {
+            const fileInput = document.getElementById('fileInput');
+            const file = fileInput.files[0];
+            
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const imageUrl = e.target.result;
+                    const sky = document.getElementById('360-image');
+                    sky.setAttribute('src', imageUrl);
+                }
+                reader.readAsDataURL(file);
+            } else {
+                console.log('Please select a file.');
+            }
+        }
+    </script>
+</body>
+</html>
