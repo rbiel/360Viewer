@@ -14,12 +14,13 @@
             <label class="custom-file-label" for="fileInput">Choose file</label>
         </div>
         <button class="btn btn-primary mb-3" onclick="uploadPicture()">Upload</button>
-        <div class="embed-responsive embed-responsive-1by1">
-            <div id="viewer" class="embed-responsive-item"></div>
-        </div>
+        <a-scene embedded keyboard-shortcuts="enabled: false">
+            <a-sky id="360-image" look-controls wasd-controls="enabled: false" touch-look-controls></a-sky>
+        </a-scene>
     </div>
 
     <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script src="https://cdn.rawgit.com/donmccurdy/aframe-extras/v6.0.0/dist/aframe-extras.min.js"></script>
     <script>
         function uploadPicture() {
             const fileInput = document.getElementById('fileInput');
@@ -29,12 +30,8 @@
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     const imageUrl = e.target.result;
-                    const viewer = document.getElementById('viewer');
-                    viewer.innerHTML = ''; // Clear previous content
-                    const imageElement = document.createElement('img');
-                    imageElement.setAttribute('src', imageUrl);
-                    imageElement.setAttribute('class', 'img-fluid');
-                    viewer.appendChild(imageElement);
+                    const sky = document.getElementById('360-image');
+                    sky.setAttribute('src', imageUrl);
                 }
                 reader.readAsDataURL(file);
             } else {
